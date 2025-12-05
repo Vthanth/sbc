@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      freezed:freezed:
+        enabled: true
+        options:
+          make_collections_unmodifiable: false
+        generate_for:
+          include:
+            - lib/**.dart
+      json_serializable:json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.dart

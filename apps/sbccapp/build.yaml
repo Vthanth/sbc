@@ -1,0 +1,28 @@
+targets:
+  $default:
+    builders:
+      mobx_codegen:mobx_generator:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.store.dart
+      freezed:freezed:
+        enabled: true
+        options:
+          make_collections_unmodifiable: false
+        generate_for:
+          include:
+            - lib/**.freeze.dart
+      json_serializable:json_serializable:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.model.dart
+            - lib/**.freezed.dart
+      copy_with_extension_gen:copy_with_extension_gen:
+        enabled: true
+        generate_for:
+          include:
+            - lib/**.model.dart
+      r_flutter:r_flutter:
+        enabled: true

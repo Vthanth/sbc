@@ -1,0 +1,34 @@
+name: app_network
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  recase: ^4.1.0
+  collection: ^1.17.1
+  get_it: ^8.0.0
+  uuid: ^4.3.3
+  logger: ^2.5.0
+
+  # network
+  http: ^1.2.0
+  universal_html: ^2.2.4
+  flutter_cache_manager: ^3.3.0
+  google_maps_webservice: #0.0.20-nullsafety.5 # using a fork because official project seems abandoned and dependencies aren't updated
+    git:
+      url: https://github.com/carnextdoor/google_maps_webservice.git
+      ref: c57ccc7102202a098dd6037175819f72adde25e1
+
+  # internal
+  app_services: ^1.0.0
+  app_models: ^1.0.0
+  app_common: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^5.0.0

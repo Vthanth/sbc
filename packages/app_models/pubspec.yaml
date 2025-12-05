@@ -1,0 +1,31 @@
+name: app_models
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.7.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  json_annotation: ^4.9.0
+  freezed_annotation: ^2.2.0
+  equatable: ^2.0.5
+  collection: ^1.17.1
+  intl: ^0.20.0
+  recase: ^4.1.0
+  universal_platform: ^1.0.0+1
+  path: ^1.8.3
+  copy_with_extension: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.0
+  freezed: ^2.3.5
+  flutter_lints: ^5.0.0
+  copy_with_extension_gen: ^6.0.0

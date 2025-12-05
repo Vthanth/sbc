@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "IT White",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/sbccapp/lib/main.dart"
+    },
+    {
+      "name": "IT White (Device Preview)",
+      "request": "launch",
+      "type": "dart",
+      "program": "apps/sbccapp/lib/main.dart",
+      "args": [
+        // "--flavor",
+        // "white",
+        // "--dart-define",
+        // "flavor=white",
+        //"--dart-define",
+        "enableDevicePreview=true"
+      ]
+    }
+  ]
+}

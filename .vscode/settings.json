@@ -1,0 +1,23 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.35.2",
+  "dart.lineLength": 120,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "cSpell.words": [
+    "Challan",
+    "initialise",
+    "interps",
+    "Noto",
+    "sbccapp",
+    "unawaited",
+    "vehical",
+    "CAMC"
+  ],
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.mocks.dart"
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false
+}

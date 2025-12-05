@@ -1,0 +1,63 @@
+name: Sbcc
+
+packages:
+  - packages/*
+  - apps/sbccapp
+
+sdkPath: .fvm/flutter_sdk
+
+scripts:
+  version:
+    exec: flutter --no-version-check --version
+
+  analyze:
+    exec: flutter --no-version-check analyze .
+
+  pub_get:
+    exec: flutter --no-version-check pub get --no-example
+
+  pub_get_with_examples:
+    exec: flutter --no-version-check pub get
+
+  pub_upgrade:
+    exec: flutter --no-version-check pub upgrade --no-example
+
+  clean_pub_overrides:
+    exec: rm -f pubspec_overrides.yaml || true
+
+  test:
+    run: melos exec --scope="sbcc" --flutter -- flutter --no-version-check test -x skip_on_ci
+    exec:
+
+  generate:
+    description: Build all generated files for Flutter packages in this project.
+    run: >-
+      melos exec --order-dependents --fail-fast --depends-on="build_runner" -- \
+        dart run build_runner build --delete-conflicting-outputs;
+
+  generate_model:
+    description: Build generated files for app_models packages in this project.
+    run:
+      melos exec --fail-fast --scope="app_models" --depends-on="build_runner" -- \
+      dart run build_runner build --delete-conflicting-outputs;
+
+  generate_assets:
+    description: Build assets files in this project.
+    run: melos exec --fail-fast --depends-on="r_flutter" -- dart run r_flutter:generate;
+
+  clean_all:
+    description: Clean all the build files.
+    run: melos exec --fail-fast --flutter -- flutter --no-version-check clean;
+
+  generate_db:
+    description: Generate database files in this project.
+    run: >-
+      melos exec --order-dependents --fail-fast --depends-on="build_runner" --depends-on="drift_dev" -- \
+        dart run build_runner build --delete-conflicting-outputs;
+
+  format: dart format fix --line-length 120 $(find . -name '*.dart' -not -name '*.g.dart' -not -name '*.freezed.dart' -not -name 'intl_messages_*.dart' -not -name '*schema_versions.dart' -not -name '*assets.dart' -not -name '*drift.dart')
+  format:check: dart format --output=none --set-exit-if-changed --line-length 120 $(find . -name '*.dart' -not -name '*.g.dart' -not -name '*.freezed.dart' -not -name 'intl_messages_*.dart' -not -name '*schema_versions.dart' -not -name '*assets.dart'  -not -name '*drift.dart')
+
+  # clean_db:
+  #   description: Clean database files in this project for drift issue workaround.
+  # run: melos exec --fail-fast --scope="app_local_stores" --flutter -- flutter --no-version-check clean;

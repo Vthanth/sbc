@@ -1,0 +1,20 @@
+name: root
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+workspace:
+  - apps/sbccapp
+  - packages/app_common
+  - packages/app_services
+  - packages/app_models
+  - packages/app_network
+
+dev_dependencies:
+  melos: ^6.1.0
+  husky: ^0.1.7
+
+# dependencies here will not be installed normally using pub get, they will only be picked up from the `setup.sh` script
+special_sbcc_root_dependencies:
+  fvm: ^3.1.3
