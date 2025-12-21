@@ -62,4 +62,24 @@ abstract class UserNetworkService {
   Future<ChallanServiceDetail> getChallanServiceDetail({required String bearerToken, required String serviceUuid});
 
   Future<ProductQr> getProductDetailsByProductId({required String bearerToken, required String productId});
+
+  Future<List<Expense>> getExpenses({required String bearerToken});
+
+  Future<void> createExpense({
+    required String bearerToken,
+    required String date,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  });
+
+  Future<void> updateExpense({
+    required String bearerToken,
+    required int id,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  });
 }

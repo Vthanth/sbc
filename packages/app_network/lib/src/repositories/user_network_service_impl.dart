@@ -491,4 +491,86 @@ class UserNetworkServiceImpl extends BaseNetworkService implements UserNetworkSe
       throw errorMessage;
     }
   }
+  @override
+  Future<List<Expense>> getExpenses({required String bearerToken}) async {
+    final requestUrl = '${host}expenses';
+    try {
+      final response = await client.get(requestUrl, headers: {"Authorization": "Bearer $bearerToken"});
+      if (isSuccessful(response.statusCode)) {
+        final body = jsonDecode(response.body);
+        final List<dynamic> dataList = body["data"];
+        return dataList.map((e) => Expense.fromJson(e)).toList();
+      } else {
+        throw Exception(response.body);
+      }
+    } catch (e) {
+      throw Exception("Network error: $e");
+    }
+  }
+
+  @override
+  Future<void> createExpense({
+    required String bearerToken,
+    required String date,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  }) async {
+    final requestUrl = '${host}expenses';
+
+    String? imageBase64;
+    if (imageFile != null) {
+      // Image picker se aayi file ko Base64 string banata hai
+      imageBase64 = "data:image/jpeg;base64,${base64Encode(imageFile.readAsBytesSync())}";
+    }
+
+    final body = {
+      "expense_date": date,
+      "amount": amount,
+      "details": details,
+      "paid_by": paidBy,
+      "receipt_image": imageBase64, // API key 'receipt_image' match karni chahiye
+    };
+
+    final response = await client.post(
+      requestUrl,
+      body: body,
+      headers: {"Authorization": "Bearer $bearerToken"},
+      encodeJson: false,
+    );
+    if (!isSuccessful(response.statusCode)) throw Exception(response.body);
+  }
+
+  @override
+  Future<void> updateExpense({
+    required String bearerToken,
+    required int id,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  }) async {
+    final requestUrl = '${host}expenses/$id';
+
+    String? imageBase64;
+    if (imageFile != null) {
+      imageBase64 = "data:image/jpeg;base64,${base64Encode(imageFile.readAsBytesSync())}";
+    }
+
+    final body = {
+      "amount": amount,
+      "details": details,
+      "paid_by": paidBy,
+      "receipt_image": imageBase64,
+    };
+
+    final response = await client.put(
+      requestUrl,
+      body: body,
+      headers: {"Authorization": "Bearer $bearerToken"},
+      encodeJson: false,
+    );
+    if (!isSuccessful(response.statusCode)) throw Exception(response.body);
+  }
 }

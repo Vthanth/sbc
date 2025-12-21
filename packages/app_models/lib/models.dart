@@ -19,3 +19,4 @@ export 'src/service_challan_data.dart';
 export 'src/ticket.dart';
 export 'src/ticket_image.dart';
 export 'src/user.dart';
+export 'src/expense.dart';
