@@ -297,6 +297,28 @@ abstract class AppClientBase implements AppClient {
   }
 
   @override
+  Future<http.Response> multipartMultiple(
+      String url, {
+        Map<String, String>? files, // Key: param name, Value: file path
+        Map<String, String>? body,
+        Map<String, String>? headers,
+      }) async {
+    http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(url));
+
+    if (headers != null) request.headers.addAll(headers);
+    if (body != null) request.fields.addAll(body);
+
+    if (files != null) {
+      for (var entry in files.entries) {
+        request.files.add(await http.MultipartFile.fromPath(entry.key, entry.value));
+      }
+    }
+
+    final streamedResponse = await request.send();
+    return await http.Response.fromStream(streamedResponse);
+  }
+
+  @override
   Future<http.Response> multipart(
     String url,
     String imagePath, {

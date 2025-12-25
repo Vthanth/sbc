@@ -6,6 +6,7 @@ import 'package:app_models/models.dart';
 import 'package:app_network/app_network.dart';
 import 'package:app_network/src/client/base_network_service.dart';
 import 'package:app_services/services.dart';
+import 'package:dio/dio.dart' as dio;
 
 class UserNetworkServiceImpl extends BaseNetworkService implements UserNetworkService {
   UserNetworkServiceImpl(AppClient client, NetworkConfigBase config) : super(client, config.apiEndPoint);
@@ -301,41 +302,85 @@ class UserNetworkServiceImpl extends BaseNetworkService implements UserNetworkSe
     required File? qrCodeImage,
   }) async {
     final requestUrl = '${host}upload-photos';
+    final Map<String, String> body = {
+      "user_id": userId,
+      "device_lang": "",
+    };
 
-    final profileImageBase64 = profileImage != null ? base64Encode(profileImage.readAsBytesSync()) : null;
-    final qrCodeImageBase64 = qrCodeImage != null ? base64Encode(qrCodeImage.readAsBytesSync()) : null;
-
-    var parameters = {"user_id": userId};
-
-    if (profileImageBase64 != null) {
-      parameters['profile_photo'] = "data:image/jpeg;base64,$profileImageBase64";
+    final Map<String, String> files = {};
+    if (profileImage != null) {
+      files['profile_photo'] = profileImage.path;
     }
-
-    if (qrCodeImageBase64 != null) {
-      parameters['sign_photo'] = "data:image/jpeg;base64,$qrCodeImageBase64";
+    if (qrCodeImage != null) {
+      files['sign_photo'] = qrCodeImage.path;
     }
 
     try {
-      final response = await client.post(
+      final response = await client.multipartMultiple(
         requestUrl,
-        body: parameters,
-        encodeJson: false,
+        files: files,
+        body: body,
         headers: {"Authorization": "Bearer $bearerToken"},
       );
+
       if (isSuccessful(response.statusCode)) {
         final body = jsonDecode(response.body);
-
         if (body['user_id'] != null) {
           body['id'] = body['user_id'];
         }
         return User.fromJson(body);
       } else {
-        throw Exception(response.body);
+        throw Exception("Server error: ${response.statusCode} - ${response.body}");
       }
-    } catch (e, _) {
-      throw Exception("Network error while calling the network service");
+    } catch (e) {
+      print("Upload Error: $e");
+      throw Exception("Network error: $e");
     }
   }
+
+  // @override
+  // Future<User?> updateProfilePhotos({
+  //   required String bearerToken,
+  //   required String userId,
+  //   required File? profileImage,
+  //   required File? qrCodeImage,
+  // }) async {
+  //   final requestUrl = '${host}upload-photos';
+  //
+  //   final profileImageBase64 = profileImage != null ? base64Encode(profileImage.readAsBytesSync()) : null;
+  //   final qrCodeImageBase64 = qrCodeImage != null ? base64Encode(qrCodeImage.readAsBytesSync()) : null;
+  //
+  //   var parameters = {"user_id": userId};
+  //
+  //   if (profileImageBase64 != null) {
+  //     parameters['profile_photo'] = "data:image/jpeg;base64,$profileImageBase64";
+  //   }
+  //
+  //   if (qrCodeImageBase64 != null) {
+  //     parameters['sign_photo'] = "data:image/jpeg;base64,$qrCodeImageBase64";
+  //   }
+  //
+  //   try {
+  //     final response = await client.post(
+  //       requestUrl,
+  //       body: parameters,
+  //       encodeJson: false,
+  //       headers: {"Authorization": "Bearer $bearerToken"},
+  //     );
+  //     if (isSuccessful(response.statusCode)) {
+  //       final body = jsonDecode(response.body);
+  //
+  //       if (body['user_id'] != null) {
+  //         body['id'] = body['user_id'];
+  //       }
+  //       return User.fromJson(body);
+  //     } else {
+  //       throw Exception(response.body);
+  //     }
+  //   } catch (e, _) {
+  //     throw Exception("Network error while calling the network service");
+  //   }
+  // }
 
   @override
   Future<Uint8List?> getQRCode({required String bearerToken}) async {

@@ -86,4 +86,10 @@ abstract class AppClient {
     Map<String, String>? headers,
     RequestBodyCallback? finalBody,
   });
+  Future<http.Response> multipartMultiple(
+      String url, {
+        Map<String, String>? files,
+        Map<String, String>? body,
+        Map<String, String>? headers,
+      });
 }
