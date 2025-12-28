@@ -313,6 +313,15 @@ class _DrawerNavigationItems extends StatelessWidget {
               context.push('/leads');
             },
           ),
+        if (isMarketing || isStaff)
+        _DrawerMenuItem(
+          icon: Icons.account_balance_wallet_outlined,
+          title: 'Expense Report',
+          onTap: () {
+            Navigator.pop(context);
+            context.push('/expenses'); // Ensure this route is in your GoRouter
+          },
+        ),
         // Staff-specific menus
         if (isStaff) ...[
           _DrawerMenuItem(

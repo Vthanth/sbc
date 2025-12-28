@@ -216,4 +216,57 @@ class UserRepositoryImpl implements UserRepository {
     }
     return _userNetworkService.getProductDetailsByProductId(bearerToken: bearerToken, productId: productId);
   }
+
+  @override
+  Future<List<Expense>> getExpenses() async {
+    final bearerToken = await _instantLocalPersistenceService.getString(SHARED_PREFERENCE_KEY_BEARER_TOKEN);
+    if (bearerToken == null) {
+      return [];
+    }
+    return _userNetworkService.getExpenses(bearerToken: bearerToken);
+  }
+
+  @override
+  Future<void> createExpense({
+    required String date,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  }) async {
+    final bearerToken = await _instantLocalPersistenceService.getString(SHARED_PREFERENCE_KEY_BEARER_TOKEN);
+    if (bearerToken == null) {
+      throw Exception('Bearer token not found');
+    }
+    return _userNetworkService.createExpense(
+      bearerToken: bearerToken,
+      date: date,
+      amount: amount,
+      details: details,
+      paidBy: paidBy,
+      imageFile: imageFile,
+    );
+  }
+
+  @override
+  Future<void> updateExpense({
+    required int id,
+    required String amount,
+    required String details,
+    required String paidBy,
+    File? imageFile,
+  }) async {
+    final bearerToken = await _instantLocalPersistenceService.getString(SHARED_PREFERENCE_KEY_BEARER_TOKEN);
+    if (bearerToken == null) {
+      throw Exception('Bearer token not found');
+    }
+    return _userNetworkService.updateExpense(
+      bearerToken: bearerToken,
+      id: id,
+      amount: amount,
+      details: details,
+      paidBy: paidBy,
+      imageFile: imageFile,
+    );
+  }
 }

@@ -68,7 +68,8 @@ class _HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: onMenuPressed,
       ),
       title: Text(
-        'Active Tickets',
+        // 'Active Tickets',
+        'Active complaint',
         style: ThemeFonts.text20Bold(textColor: ThemeColors.primaryBlack),
       ),
       actions: [
@@ -178,11 +179,48 @@ class _OrdersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activeOrders = orders.where((ticket) {
+      return ticket.state != TicketState.finished;
+    }).toList();
+
+    if (activeOrders.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: ThemeColors.themeBlue.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.check_circle_outline, size: 48, color: ThemeColors.themeBlue),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                "All Caught Up!",
+                style: ThemeFonts.text20Bold(textColor: ThemeColors.primaryBlack),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "You have no active complaints at the moment. Good job!",
+                style: ThemeFonts.text14(textColor: ThemeColors.midGrey),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: orders.length,
+      // itemCount: orders.length,
+      itemCount: activeOrders.length,
       itemBuilder: (context, index) {
-        return OrderCard(order: orders[index]);
+        return OrderCard(order: activeOrders[index]);
       },
     );
   }

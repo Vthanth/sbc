@@ -82,6 +82,7 @@ class _ServiceChallanPageState extends State<ServiceChallanPage> {
   final List<String> _paymentStatusOptions = ['Pending', 'Paid'];
   final List<String> _paymentOptions = ['Bill', 'Cash'];
 
+  bool isSerialReadOnly = true;
   @override
   void initState() {
     super.initState();
@@ -94,8 +95,10 @@ class _ServiceChallanPageState extends State<ServiceChallanPage> {
     if (widget.initialModelNumber != null) {
       _unitModelNumberController.text = widget.initialModelNumber!;
     }
-    if (widget.initialSerialNumber != null) {
+    if (widget.initialSerialNumber != null && widget.initialSerialNumber!.isNotEmpty) {
       _unitSrNoController.text = widget.initialSerialNumber!;
+    }else {
+      isSerialReadOnly = false;
     }
     _setupControllers();
   }
@@ -359,6 +362,7 @@ class _ServiceChallanPageState extends State<ServiceChallanPage> {
                     unitSrNoController: _unitSrNoController,
                     serviceDescriptionController: _serviceDescriptionController,
                     refrigerantController: _refrigerantController,
+                    isSerialReadOnly: isSerialReadOnly,
                   ),
 
                   // Electrical Measurements Section
@@ -677,12 +681,14 @@ class _UnitInformationSection extends StatelessWidget {
   final TextEditingController unitSrNoController;
   final TextEditingController serviceDescriptionController;
   final TextEditingController refrigerantController;
+  final bool isSerialReadOnly;
 
   const _UnitInformationSection({
     required this.unitModelNumberController,
     required this.unitSrNoController,
     required this.serviceDescriptionController,
     required this.refrigerantController,
+    required this.isSerialReadOnly,
   });
 
   @override
@@ -713,7 +719,7 @@ class _UnitInformationSection extends StatelessWidget {
                 child: _buildUnderlineTextFieldHelper(
                   controller: unitSrNoController,
                   hint: 'SR12345',
-                  readOnly: true,
+                  readOnly: isSerialReadOnly,
                   primaryBlue: _primaryBlue,
                 ),
               ),

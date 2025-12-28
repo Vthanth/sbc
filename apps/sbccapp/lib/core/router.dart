@@ -1,3 +1,4 @@
+import 'package:app_models/models.dart';
 import 'package:app_services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,7 @@ import 'package:sbccapp/pages/product_scan_page.dart';
 import 'package:sbccapp/pages/profile_page.dart';
 import 'package:sbccapp/pages/profile_photo_page.dart';
 import 'package:sbccapp/pages/service_challan_page.dart';
+import 'package:sbccapp/pages/expense_page.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 class RouteName {
@@ -33,6 +35,8 @@ class RouteName {
   static const String productScan = '/product-scan';
   static const String challanInfo = '/challan-info';
   static const String leads = '/leads';
+  static const String expenses = '/expenses';
+  static const String expenseForm = '/expense-form';
   static const String createLeads = '/create-leads';
   static const String leadDetail = '/lead-detail';
   static const String deliveryChallan = '/delivery-challan/:uuid';
@@ -52,6 +56,8 @@ class AppRoutes {
   static const String productScan = "/product-scan";
   static const String challanInfo = "/challan-info";
   static const String leads = '/leads';
+  static const String expenses = '/expenses';
+  static const String expenseForm = '/expense-form';
   static const String createLeads = '/create-leads';
   static const String leadDetail = '/lead-detail';
   static const String deliveryChallan = "/delivery-challan/:uuid";
@@ -150,6 +156,31 @@ final GoRouter kRouter = GoRouter(
         return const AttendanceReportPage();
       },
     ),
+
+    // Expense Report Page
+    GoRoute(
+      name: RouteName.expenses,
+      path: AppRoutes.expenses,
+      builder: (_, routerState) {
+        return const ExpensePage(); // This is the UI page we created earlier
+      },
+    ),
+
+    // Expense Form Page
+    // GoRoute(
+    //   name: RouteName.expenseForm,
+    //   path: AppRoutes.expenseForm,
+    //   pageBuilder: (context, state) {
+    //     // If editing, an Expense object is passed via 'extra'
+    //     final expense = state.extra as Expense?;
+    //     return _slideUpTransitionPage(
+    //       state,
+    //       context,
+    //       ExpenseFormPage(expense: expense),
+    //     );
+    //   },
+    // ),
+
     // Order Details page
     GoRoute(
       name: RouteName.orderDetails,

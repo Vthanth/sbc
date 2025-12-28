@@ -9,6 +9,7 @@ import 'package:sbccapp/services/location_tracking_manager.dart';
 import 'package:sbccapp/services/qr_code_service.dart';
 import 'package:sbccapp/stores/attendance_page.store.dart';
 import 'package:sbccapp/stores/completed_tickets_page.store.dart';
+import 'package:sbccapp/stores/expense.store.dart';
 import 'package:sbccapp/stores/home_page.store.dart';
 import 'package:sbccapp/stores/location.store.dart';
 import 'package:sbccapp/stores/order_details.store.dart';
@@ -60,4 +61,6 @@ void setupLocator(AppConfigBase config) {
 
   // Initialize location tracking manager
   locator<LocationTrackingManager>().initialize();
+
+  locator.registerLazySingleton<ExpenseStore>(() => ExpenseStore());
 }
